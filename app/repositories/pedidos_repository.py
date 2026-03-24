@@ -18,7 +18,6 @@ class PedidosRepository:
                 o.id_order,
                 o.order_number,
                 o.status              AS estado,
-                o.subtotal,
                 o.total_amount,
                 o.order_date,
                 DATE(o.order_date)    AS fecha,

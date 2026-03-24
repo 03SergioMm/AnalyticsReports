@@ -17,7 +17,6 @@ class VentasRepository:
                 o.id_order,
                 o.order_number,
                 o.status             AS estado_pedido,
-                o.subtotal,
                 o.total_amount,
                 DATE(o.order_date)   AS fecha,
                 o.order_date,
