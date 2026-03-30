@@ -1,5 +1,6 @@
-
 from pydantic_settings import BaseSettings
+from pydantic import field_validator
+import json
 
 
 class Settings(BaseSettings):
@@ -12,10 +13,19 @@ class Settings(BaseSettings):
 
     CORS_ALLOWED_ORIGINS: list[str] = ["http://localhost:5173"]
 
+    @field_validator("CORS_ALLOWED_ORIGINS", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, v):
+        if isinstance(v, str):
+            try:
+                return json.loads(v)      # maneja: ["http://..."]
+            except (json.JSONDecodeError, ValueError):
+                return [o.strip() for o in v.split(",") if o.strip()]  # maneja: http://...,http://...
+        return v
 
     model_config = {
         "env_file": ".env",
-        "extra": "ignore"   # ← ESTA ES LA LÍNEA QUE FALTABA
+        "extra": "ignore"
     }
 
 
