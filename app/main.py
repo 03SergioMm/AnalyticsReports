@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.routes import reports
 
+
+print("🔥 VERSION NUEVA CORS APLICADA")  # 👈 AQUÍ
+
 app = FastAPI(
     title=settings.API_TITLE,
     version=settings.API_VERSION,
@@ -22,7 +25,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ALLOWED_ORIGINS,    # ✅ usa tu lista
+   print("🔥 CORS SETTINGS:", settings.CORS_ALLOWED_ORIGINS),    # ✅ usa tu lista
     allow_credentials=True,
     allow_methods=["*"],     # ✅ permite preflight (IMPORTANTE)
     allow_headers=["*"],     # ✅ evita bloqueos
