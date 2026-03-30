@@ -3,6 +3,9 @@ from pydantic import field_validator
 import json
 
 
+from pydantic_settings import BaseSettings
+
+
 class Settings(BaseSettings):
     DB_URL: str
     JWT_SECRET: str = "super_secret_key_change_in_prod"
@@ -11,17 +14,7 @@ class Settings(BaseSettings):
     API_TITLE: str = "Analytics Service - Burger eCommerce"
     API_VERSION: str = "1.0.0"
 
-    CORS_ALLOWED_ORIGINS: list[str] = ["http://localhost:5173"]
-
-    @field_validator("CORS_ALLOWED_ORIGINS", mode="before")
-    @classmethod
-    def parse_cors_origins(cls, v):
-        if isinstance(v, str):
-            try:
-                return json.loads(v)      # maneja: ["http://..."]
-            except (json.JSONDecodeError, ValueError):
-                return [o.strip() for o in v.split(",") if o.strip()]  # maneja: http://...,http://...
-        return v
+    CORS_ALLOWED_ORIGINS: str = "http://localhost:5173"
 
     model_config = {
         "env_file": ".env",
@@ -29,4 +22,5 @@ class Settings(BaseSettings):
     }
 
 
+settings = Settings()
 settings = Settings()
