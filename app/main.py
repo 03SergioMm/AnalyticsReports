@@ -4,8 +4,6 @@ from app.core.config import settings
 from app.api.routes import reports
 
 
-print("🔥 VERSION NUEVA CORS APLICADA")  # 👈 AQUÍ
-
 app = FastAPI(
     title=settings.API_TITLE,
     version=settings.API_VERSION,
@@ -25,10 +23,10 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-   print("🔥 CORS SETTINGS:", settings.CORS_ALLOWED_ORIGINS),    # ✅ usa tu lista
+    settings.CORS_ALLOWED_ORIGINS,  
     allow_credentials=True,
-    allow_methods=["*"],     # ✅ permite preflight (IMPORTANTE)
-    allow_headers=["*"],     # ✅ evita bloqueos
+    allow_methods=["*"],     
+    allow_headers=["*"],    
 )
 
 app.include_router(reports.router, prefix="/reports", tags=["Reports"])
