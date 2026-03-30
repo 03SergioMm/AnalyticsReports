@@ -22,14 +22,10 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,       # ← lista específica, NO "*"
-    allow_credentials=True,      # ← necesario para enviar el token
-    allow_methods=["GET"],       # ← solo lectura, solo GET
-    allow_headers=[
-        "Authorization",         # ← para el Bearer token
-        "Content-Type",
-        "X-API-Key",             # ← para la API Key
-    ],
+    allow_origins=settings.CORS_ALLOWED_ORIGINS,    # ✅ usa tu lista
+    allow_credentials=True,
+    allow_methods=["*"],     # ✅ permite preflight (IMPORTANTE)
+    allow_headers=["*"],     # ✅ evita bloqueos
 )
 
 app.include_router(reports.router, prefix="/reports", tags=["Reports"])

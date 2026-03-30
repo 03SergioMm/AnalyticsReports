@@ -1,3 +1,4 @@
+
 from pydantic_settings import BaseSettings
 
 
@@ -8,6 +9,9 @@ class Settings(BaseSettings):
     API_KEY: str = "analytics_api_key_2026"
     API_TITLE: str = "Analytics Service - Burger eCommerce"
     API_VERSION: str = "1.0.0"
+
+    CORS_ALLOWED_ORIGINS: list[str] = ["http://localhost:5173"]
+
 
     model_config = {
         "env_file": ".env",
