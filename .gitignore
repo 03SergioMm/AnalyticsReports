@@ -1,0 +1,62 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+.env
+.venv
+venv/
+env/
+
+# Variables de entorno (MUY IMPORTANTE)
+.env.*
+!.env.example
+
+# Archivos de distribución
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Logs
+*.log
+
+# Archivos de base de datos local
+*.sqlite3
+
+# Archivos temporales
+*.swp
+*.swo
+*~
+
+# Configuración de editores
+.vscode/
+.idea/
+
+# Mac / Windows
+.DS_Store
+Thumbs.db
+
+# Pytest
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Mypy
+.mypy_cache/
+
+# Ruff / linters
+.ruff_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Archivos de Docker (opcional)
+docker-compose.override.yml
+
+# Archivos de sistema
+*.pid
+*.seed
