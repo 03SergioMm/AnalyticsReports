@@ -30,8 +30,17 @@ def root():
         "service": settings.API_TITLE,
         "version": settings.API_VERSION,
     }
-
+ 
 
 @app.get("/health", tags=["Health"])
 def health():
     return {"status": "healthy"}
+
+
+
+@app.get("/debug-cors", tags=["Health"])
+def debug_cors():
+    return {
+        "raw": settings.CORS_ALLOWED_ORIGINS,
+        "parsed": settings.CORS_ALLOWED_ORIGINS.split(","),
+    }
