@@ -3,6 +3,9 @@ from sqlalchemy import text
 from app.db.database import get_engine
 from typing import Optional
 
+# Estados que representan una venta confirmada
+ESTADOS_CONFIRMADOS = "('ACCEPTED', 'IN_PROGRESS', 'READY')"
+
 
 class MetricasRepository:
 
@@ -11,7 +14,7 @@ class MetricasRepository:
         fecha_inicio: Optional[str] = None,
         fecha_fin: Optional[str] = None,
     ) -> pd.DataFrame:
-        query = """
+        query = f"""
             SELECT
                 COUNT(o.id_order)     AS total_pedidos,
                 SUM(o.total_amount)   AS total_ventas,
@@ -20,6 +23,7 @@ class MetricasRepository:
                 MAX(o.total_amount)   AS pedido_maximo
             FROM `order` o
             WHERE o.deleted_at IS NULL
+              AND o.status IN {ESTADOS_CONFIRMADOS}
         """
         params: dict = {}
         if fecha_inicio:
@@ -38,6 +42,7 @@ class MetricasRepository:
         fecha_inicio: Optional[str] = None,
         fecha_fin: Optional[str] = None,
     ) -> pd.DataFrame:
+        # Este sí muestra TODOS los estados para ver distribución completa
         query = """
             SELECT
                 o.status              AS estado,
@@ -64,7 +69,7 @@ class MetricasRepository:
         fecha_inicio: Optional[str] = None,
         fecha_fin: Optional[str] = None,
     ) -> pd.DataFrame:
-        query = """
+        query = f"""
             SELECT
                 p.payment_method      AS metodo_pago,
                 COUNT(p.id_payment)   AS cantidad_transacciones,
@@ -72,6 +77,7 @@ class MetricasRepository:
             FROM payment p
             JOIN `order` o ON o.id_order = p.id_order
             WHERE o.deleted_at IS NULL
+              AND o.status IN {ESTADOS_CONFIRMADOS}
         """
         params: dict = {}
         if fecha_inicio:

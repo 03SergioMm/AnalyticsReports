@@ -3,6 +3,8 @@ from sqlalchemy import text
 from app.db.database import get_engine
 from typing import Optional
 
+ESTADOS_CONFIRMADOS = "('ACCEPTED', 'IN_PROGRESS', 'READY')"
+
 
 class VentasRepository:
 
@@ -12,7 +14,7 @@ class VentasRepository:
         fecha_fin: Optional[str] = None,
         metodo_pago: Optional[str] = None,
     ) -> pd.DataFrame:
-        query = """
+        query = f"""
             SELECT
                 o.id_order,
                 o.order_number,
@@ -25,6 +27,7 @@ class VentasRepository:
             FROM `order` o
             LEFT JOIN payment p ON p.id_order = o.id_order
             WHERE o.deleted_at IS NULL
+              AND o.status IN {ESTADOS_CONFIRMADOS}
         """
         params: dict = {}
 
