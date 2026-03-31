@@ -27,8 +27,8 @@ class PedidosRepository:
                 p.amount              AS monto_pagado,
                 p.paid_at
             FROM `order` o
-            LEFT JOIN user u    ON u.id_user   = o.id_user
-            LEFT JOIN payment p ON p.id_order  = o.id_order
+            LEFT JOIN user u    ON u.id_user  = o.id_user
+            LEFT JOIN payment p ON p.id_order = o.id_order
             WHERE o.deleted_at IS NULL
         """
         params: dict = {}
