@@ -122,15 +122,32 @@ def debug_tablas(_user=Depends(require_role)):
     from sqlalchemy import text
     from app.db.database import get_engine
 
-    tablas = ["`order`", "order_item", "payment", "user", "product", "burger"]
     resultado = {}
 
     with get_engine().connect() as conn:
-        for tabla in tablas:
+        # Tablas sin soft delete
+        tablas_simples = ["`order`", "order_item", "payment", "burger"]
+        for tabla in tablas_simples:
             try:
                 r = conn.execute(text(f"SELECT COUNT(*) FROM {tabla}"))
                 resultado[tabla.replace("`", "")] = r.fetchone()[0]
             except Exception as e:
                 resultado[tabla.replace("`", "")] = f"ERROR: {str(e)}"
+
+        # Tablas CON soft delete → filtrar deleted_at IS NULL
+        tablas_con_softdelete = ["user", "product"]
+        for tabla in tablas_con_softdelete:
+            try:
+                r = conn.execute(
+                    text(f"SELECT COUNT(*) FROM {tabla} WHERE deleted_at IS NULL")
+                )
+                resultado[tabla] = r.fetchone()[0]
+                # Mostrar también cuántos están eliminados
+                r2 = conn.execute(
+                    text(f"SELECT COUNT(*) FROM {tabla} WHERE deleted_at IS NOT NULL")
+                )
+                resultado[f"{tabla}_eliminados"] = r2.fetchone()[0]
+            except Exception as e:
+                resultado[tabla] = f"ERROR: {str(e)}"
 
     return resultado
