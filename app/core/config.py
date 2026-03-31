@@ -1,4 +1,9 @@
 from pydantic_settings import BaseSettings
+from pydantic import field_validator
+import json
+
+
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -9,10 +14,13 @@ class Settings(BaseSettings):
     API_TITLE: str = "Analytics Service - Burger eCommerce"
     API_VERSION: str = "1.0.0"
 
+    CORS_ALLOWED_ORIGINS: str = "http://localhost:5173"
+
     model_config = {
         "env_file": ".env",
-        "extra": "ignore"   # ← ESTA ES LA LÍNEA QUE FALTABA
+        "extra": "ignore"
     }
 
 
+settings = Settings()
 settings = Settings()

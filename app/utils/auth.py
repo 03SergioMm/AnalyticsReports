@@ -1,5 +1,5 @@
 import base64
-from fastapi import HTTPException, Security, status
+from fastapi import HTTPException, Security, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials, APIKeyHeader
 from jose import JWTError, jwt
 from sqlalchemy import text
@@ -68,9 +68,13 @@ def get_role_from_db(email: str) -> str:
 
 
 def require_role(
+    request:Request,
     credentials: HTTPAuthorizationCredentials = Security(bearer_scheme),
     api_key: str = Security(api_key_header),
 ):
+    if request.method == "OPTIONS":
+        return
+
     # API Key → acceso directo server-to-server
     if api_key and api_key == settings.API_KEY:
         return {"sub": "service_account", "role": "ADMIN"}

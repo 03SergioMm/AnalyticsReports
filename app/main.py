@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.routes import reports
 
+
 app = FastAPI(
     title=settings.API_TITLE,
     version=settings.API_VERSION,
@@ -11,25 +12,12 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-# Orígenes permitidos — agrega todos los que uses
-origins = [
-    "http://localhost:5173",    # React con Vite
-    "http://localhost:3000",    # React con CRA
-    "http://localhost:4200",    # Angular (por si acaso)
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000",
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,       # ← lista específica, NO "*"
-    allow_credentials=True,      # ← necesario para enviar el token
-    allow_methods=["GET"],       # ← solo lectura, solo GET
-    allow_headers=[
-        "Authorization",         # ← para el Bearer token
-        "Content-Type",
-        "X-API-Key",             # ← para la API Key
-    ],
+    allow_origins=settings.CORS_ALLOWED_ORIGINS.split(","),  
+    allow_credentials=True,
+    allow_methods=["*"],     
+    allow_headers=["*"],    
 )
 
 app.include_router(reports.router, prefix="/reports", tags=["Reports"])
@@ -42,8 +30,17 @@ def root():
         "service": settings.API_TITLE,
         "version": settings.API_VERSION,
     }
-
+ 
 
 @app.get("/health", tags=["Health"])
 def health():
     return {"status": "healthy"}
+
+
+
+@app.get("/debug-cors", tags=["Health"])
+def debug_cors():
+    return {
+        "raw": settings.CORS_ALLOWED_ORIGINS,
+        "parsed": settings.CORS_ALLOWED_ORIGINS.split(","),
+    }
