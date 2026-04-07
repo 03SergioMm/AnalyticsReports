@@ -108,7 +108,7 @@ analytics_service/
 
 ---
 
-## 🚀 Instalación
+## 🚀 Instalación nube
 
 ### 1. Clonar el repositorio
 ```bash
@@ -150,5 +150,46 @@ source venv/bin/activate     # Linux/Mac
 
 # Correr el servidor con auto-reload
 uvicorn app.main:app --reload --port 8000
+
+## 🚀 Instalación local 
+
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/tu-usuario/analytics-service.git
+cd analytics-service
+
+Implementa **arquitectura limpia** con separación en capas:
+2. Crear entorno virtual con Python 3.11
+   py -3.11 -m venv venv
+
+3. Activar el entorno virtual
+   # Windows
+venv\Scripts\activate
+
+# Linux / Mac
+source venv/bin/activate
+
+4. Instalar dependencias
+  pip install -r requirements.txt
+
+
+Configuración
+Crea el archivo .env en la raíz del proyecto:
+# Base de Datos MySQL 
+DB_URL=jdbc:mysql://localhost:3306
+DB_USERNAME=root
+DB_PASSWORD=
+
+# JWT — debe ser el mismo secret que usa Spring Boot
+JWT_SECRET=tu_jwt_secret_en_base64
+JWT_ALGORITHM=HS256
+
+# API Key para integración server-to-server con Spring Boot
+API_KEY=tu_api_key_segura
+
+
+Ejecución
+# Activar entorno virtual
+venv\Scripts\activate        # Windows
 
 
